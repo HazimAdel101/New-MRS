@@ -1,0 +1,18 @@
+def print_movie_rating(rating):
+    for i in range(5):
+        if i < rating:
+            print("★", end="")
+        elif i < rating + 0.5:
+            print("½", end="")
+        else:
+            print("☆", end="")
+    
+    print()
+
+# Example usage:
+ratings = [4.5, 2, 3.5, 0, 5]
+
+for rating in ratings:
+    print(f"Rating: {rating}")
+    print_movie_rating(rating)
+    print()
