@@ -9,7 +9,6 @@
 		{% include "navbar.html" %}
 
 		{% include "login.html" %}
-		
 		<section class="breadcrumb-area">
 			<div class="container">
 				<div class="row">
@@ -27,268 +26,81 @@
 				<div class="row flexbox-center">
 					<div class="col-lg-6 text-center text-lg-left">
 					    <div class="section-title">
-							<h1><i class="icofont icofont-movie"></i> Spotlight This Month</h1>
+							<h1><i class="icofont icofont-movie"></i> Genres</h1>
 						</div>
 					</div>
 					<div class="col-lg-6 text-center text-lg-right">
 					    <div class="portfolio-menu">
 							<ul>
-								<li data-filter="*" class="active">Latest</li>
-								<li data-filter=".soon">Comming Soon</li>
+								<li data-filter="*" class="active">All</li>
+								{% for genre in genres %}
+       								<li data-filter=".{{ genre.name|lower }}">{{ genre.name }}</li>
+   								{% endfor %}
+								{% comment %} 
+								<li data-filter="">Action</li>
 								<li data-filter=".top">Top Rated</li>
-								<li data-filter=".released">Recently Released</li>
+								<li data-filter=".released">Recently Released</li> {% endcomment %}
 							</ul>
 						</div>
 					</div>
 				</div>
 				<hr />
-				<div class="row portfolio-item">
+				<div class=" portfolio-item">
+ 
+					<div class="container-fluid">	
+						{% for movie in action_movies %}
+						<!-- Display movie details here -->
+						<p>Title: {{ movie.title }}</p>
+						<p>Genres: {% for genre in movie.genres.all %}{{ genre.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+						<!-- Add other movie details as needed -->
+					{% endfor %}
 					
-					
-					<div class="col-lg-3 col-md-4 col-sm-6 soon released">
+
+
+
+						<div class="row">
 						{% for movie in movies %}
-						
-
-
-
-							<div class="single-portfolio">
-
-							<div class="single-portfolio-img">
-								<img src="{{ movie.image.url }}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-
-							<div class="portfolio-content">
-								<h2>{{ movie.title }}</h2>
-								<div class="review">
-									<div class="author-review">
-										{% for i in '12345' %}
-											{% with threshold=i|floatformat|add:"-0.5" %}
-												{% if threshold < movie.rating|floatformat %}
-												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-													<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-												</svg>
-												{% elif threshold == movie.rating|floatformat %}
-												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-													<path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-												</svg>
-
-												{% else %}
-												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
-													<path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
-												  </svg>
-												{% endif %}
-											{% endwith %}
-										{% endfor %}
+								{% if forloop.counter0|divisibleby:4 %} <div class="row text-center"> {%  endif %}
+									<div class="col-lg-3 col-md-4 col-sm-6 "  onclick="window.location.href='{% url 'movie_details' movie.id %}'" style="cursor: pointer">
+										<div class="single-portfolio">
+											<div class="single-portfolio-img">
+												<img style="height: 400px; width: 300px; border-radius: 10%;" src="{{ movie.image.url }}" alt="portfolio" />
+												<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
+													<i class="icofont icofont-ui-play"></i>
+												</a>
 											</div>
-									<h4>999k voters</h4>
-								</div>
-							</div>
-						</div>
-						{% endfor %}
-					</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-					<div class="col-lg-3 col-md-4 col-sm-6 soon released">
-						<div class="single-portfolio">
-							<div class="single-portfolio-img">
-								<img src="{% static '/img/portfolio/portfolio1.png'%}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-							<div class="portfolio-content">
-								<h2>Boyz II Men</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
+											<div class="portfolio-content">
+												<h2>{{ movie.title }}</h2>
+												<div class="review">
+													<div class="author-review">
+														{% for i in '12345' %}
+															{% with threshold=i|floatformat|add:"-0.5" %}
+																{% if threshold < movie.rating|floatformat %}
+																	<img src="{% static '/img/star.svg'%}" alt="portfolio" />
+																	
+																{% elif threshold == movie.rating|floatformat %}
+																	<img src="{% static '/img/half-star.svg'%}" alt="portfolio" />
+																	
+																{% else %}
+																	<img src="{% static '/img/empty-star.svg'%}" alt="portfolio" />
+																	
+																{% endif %}
+															{% endwith %}
+														{% endfor %}
+													</div>
+													<h4>999k voters</h4>
+												</div>
+											</div>
+										</div>
 									</div>
-									<h4>180k voters</h4>
-								</div>
+									{% if forloop.counter|divisibleby:4 or forloop.last %}</div><!-- row closing --><hr>{% endif %}
+								{% endfor %} 
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6 top">
-						<div class="single-portfolio">
-							<div class="single-portfolio-img">
-								<img src="{% static '/img/portfolio/portfolio2.png'%}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-							<div class="portfolio-content">
-								<h2>Tale of Revemge</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6 soon">
-						<div class="single-portfolio">
-							<div class="single-portfolio-img">
-								<img src="{% static '/img/portfolio/portfolio3.png'%}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-							<div class="portfolio-content">
-								<h2>The Lost City of Z</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6 top released">
-						<div class="single-portfolio">
-							<div class="single-portfolio-img">
-								<img src="{% static '/img/portfolio/portfolio4.png'%}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-							<div class="portfolio-content">
-								<h2>Beast Beauty</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6 released">
-						<div class="single-portfolio">
-							<div class="single-portfolio-img">
-								<img src="{% static '/img/portfolio/portfolio5.png'%}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-							<div class="portfolio-content">
-								<h2>In The Fade</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6 soon top">
-						<div class="single-portfolio">
-							<div class="single-portfolio-img">
-								<img src="{% static '/img/portfolio/portfolio6.png'%}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-							<div class="portfolio-content">
-								<h2>Last Hero</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6 soon">
-						<div class="single-portfolio">
-							<div class="single-portfolio-img">
-								<img src="{% static '/img/portfolio/portfolio3.png'%}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-							<div class="portfolio-content">
-								<h2>The Lost City of Z</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-4 col-sm-6 top released">
-						<div class="single-portfolio">
-							<div class="single-portfolio-img">
-								<img src="{% static '/img/portfolio/portfolio4.png'%}" alt="portfolio" />
-								<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
-									<i class="icofont icofont-ui-play"></i>
-								</a>
-							</div>
-							<div class="portfolio-content">
-								<h2>Beast Beauty</h2>
-								<div class="review">
-									<div class="author-review">
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-										<i class="icofont icofont-star"></i>
-									</div>
-									<h4>180k voters</h4>
-								</div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
-			</div>
-		</section><!-- portfolio section end -->
+
 		<!-- video section start -->
 		<section class="video ptb-90">
 			<div class="container">
@@ -358,6 +170,39 @@
 		</section><!-- video section end -->
 		<!-- footer section start -->
 		{% include "footer.html" %}
+
+
+{% comment %} 
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				let genreFilterButtons = document.querySelectorAll("#genre-filter li");
+				let movieItems = document.querySelectorAll(".portfolio-item .col-lg-3");
+		
+				genreFilterButtons.forEach(function (button) {
+					button.addEventListener("click", function () {
+						// Remove 'active' class from all buttons
+						genreFilterButtons.forEach(function (btn) {
+							btn.classList.remove("active");
+						});
+		
+						// Add 'active' class to the clicked button
+						button.classList.add("active");
+		
+						// Filter movies based on the selected genre
+						let selectedGenre = button.getAttribute("data-filter");
+		
+						movieItems.forEach(function (item) {
+							item.style.display = "none";
+		
+							if (selectedGenre === "*" || item.classList.contains(selectedGenre)) {
+								item.style.display = "block";
+							}
+						});
+					});
+				});
+			});
+		</script> {% endcomment %}
+		
 	</body>
 
 </html>

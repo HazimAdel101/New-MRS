@@ -154,6 +154,7 @@
       $(".portfolio-menu li").removeClass("active");
       $(this).addClass("active");
       var selector = $(this).attr('data-filter');
+	  console.log('Selected filter:', selector); // Debugging statement
       $(".portfolio-item").isotope({
         filter: selector
       })

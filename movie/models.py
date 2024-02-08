@@ -13,6 +13,9 @@ class Movie(models.Model):
     director = models.CharField(max_length=100)
     genres = models.ManyToManyField(Genre, blank=False)    
     release_year = models.DateField(auto_now_add = True)
+    duration = models.FloatField()
+    language = models.CharField(max_length=50)
+    link = models.URLField()
     rating = models.FloatField(
         validators=[MinValueValidator(0), MaxValueValidator(5)]
     )    
@@ -21,6 +24,6 @@ class Movie(models.Model):
     actors = models.ManyToManyField(Celebrity)
     views = models.IntegerField(default=0)
     
-
+    
 def __str__(self):
         return self.title
