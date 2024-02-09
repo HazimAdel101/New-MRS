@@ -1,5 +1,7 @@
 <!DOCTYPE HTML>
-{%load static%}
+{%load static%}  <!-- loading static files (css -js - images) -->
+{%load filters%} <!-- function for filtering stars -->
+
 
 <html lang="zxx">
 	{% include "header.html" %}
@@ -9,6 +11,7 @@
 		{% include "navbar.html" %}
 
 		{% include "login.html" %}
+
 		<section class="breadcrumb-area">
 			<div class="container">
 				<div class="row">
@@ -20,7 +23,7 @@
 				</div>
 			</div>
 		</section><!-- breadcrumb area end -->
-		<!-- portfolio section start -->
+
 		<section class="portfolio-area pt-60">
 			<div class="container">
 				<div class="row flexbox-center">
@@ -36,35 +39,21 @@
 								{% for genre in genres %}
        								<li data-filter=".{{ genre.name|lower }}">{{ genre.name }}</li>
    								{% endfor %}
-								{% comment %} 
-								<li data-filter="">Action</li>
-								<li data-filter=".top">Top Rated</li>
-								<li data-filter=".released">Recently Released</li> {% endcomment %}
+								
 							</ul>
 						</div>
 					</div>
 				</div>
 				<hr />
-				<div class=" portfolio-item">
- 
-					<div class="container-fluid">	
-						{% for movie in action_movies %}
-						<!-- Display movie details here -->
-						<p>Title: {{ movie.title }}</p>
-						<p>Genres: {% for genre in movie.genres.all %}{{ genre.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-						<!-- Add other movie details as needed -->
-					{% endfor %}
-					
-
-
-
-						<div class="row">
-						{% for movie in movies %}
-								{% if forloop.counter0|divisibleby:4 %} <div class="row text-center"> {%  endif %}
-									<div class="col-lg-3 col-md-4 col-sm-6 "  onclick="window.location.href='{% url 'movie_details' movie.id %}'" style="cursor: pointer">
+				<div class=" portfolio-item<">
+					<div class="row">
+					<div class="container portfolio-item">    
+								{% for movie in data %}
+								
+									<div class="col-lg-3 col-md-4 col-sm-6 text-center  m-4 {% for genre in movie.genres %}{{ genre|lower  }} {% endfor %}" onclick="window.location.href='{% url 'movie_details' movie.id %}'" style="cursor: pointer">
 										<div class="single-portfolio">
 											<div class="single-portfolio-img">
-												<img style="height: 400px; width: 300px; border-radius: 10%;" src="{{ movie.image.url }}" alt="portfolio" />
+												<img style="height: 400px; width: 300px; border-radius: 10%;" src="{{ movie.poster }}" alt="portfolio" />
 												<a href="https://www.youtube.com/watch?v=RZXnugbhw_4" class="popup-youtube">
 													<i class="icofont icofont-ui-play"></i>
 												</a>
@@ -74,18 +63,7 @@
 												<div class="review">
 													<div class="author-review">
 														{% for i in '12345' %}
-															{% with threshold=i|floatformat|add:"-0.5" %}
-																{% if threshold < movie.rating|floatformat %}
-																	<img src="{% static '/img/star.svg'%}" alt="portfolio" />
-																	
-																{% elif threshold == movie.rating|floatformat %}
-																	<img src="{% static '/img/half-star.svg'%}" alt="portfolio" />
-																	
-																{% else %}
-																	<img src="{% static '/img/empty-star.svg'%}" alt="portfolio" />
-																	
-																{% endif %}
-															{% endwith %}
+															{{ movie.rating|floatformat|star_evaluation:i|safe }}
 														{% endfor %}
 													</div>
 													<h4>999k voters</h4>
@@ -93,9 +71,9 @@
 											</div>
 										</div>
 									</div>
-									{% if forloop.counter|divisibleby:4 or forloop.last %}</div><!-- row closing --><hr>{% endif %}
+									
 								{% endfor %} 
-							</div>
+
 						</div>
 					</div>
 					
@@ -171,38 +149,6 @@
 		<!-- footer section start -->
 		{% include "footer.html" %}
 
-
-{% comment %} 
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-				let genreFilterButtons = document.querySelectorAll("#genre-filter li");
-				let movieItems = document.querySelectorAll(".portfolio-item .col-lg-3");
-		
-				genreFilterButtons.forEach(function (button) {
-					button.addEventListener("click", function () {
-						// Remove 'active' class from all buttons
-						genreFilterButtons.forEach(function (btn) {
-							btn.classList.remove("active");
-						});
-		
-						// Add 'active' class to the clicked button
-						button.classList.add("active");
-		
-						// Filter movies based on the selected genre
-						let selectedGenre = button.getAttribute("data-filter");
-		
-						movieItems.forEach(function (item) {
-							item.style.display = "none";
-		
-							if (selectedGenre === "*" || item.classList.contains(selectedGenre)) {
-								item.style.display = "block";
-							}
-						});
-					});
-				});
-			});
-		</script> {% endcomment %}
-		
 	</body>
 
 </html>

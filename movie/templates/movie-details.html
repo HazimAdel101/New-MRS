@@ -42,24 +42,24 @@
                 </h2>
                 <p>{% for genre in movie.genres.all %}
 					{{ genre.name }}|
-					{% endfor %}  3D | Animation | Action | Sci-Fi</p>
+					{% endfor %}</p>
                 <ul>
                  
                   <li>
                     <div class="transformers-left">Director:</div>
-                    <div class="transformers-right">{{movie.director}}</div>
+                    <div class="transformers-right">{{movie_data.plot}}</div>
                   </li>
                   <li>
                     <div class="transformers-left">Time:</div>
-                    <div class="transformers-right">{{movie.duration}}M</div>
+                    <div class="transformers-right">{{movie_data.genre}}M</div>
                   </li>
                   <li>
                     <div class="transformers-left">Release:</div>
-                    <div class="transformers-right">{{movie.release_year}}</div>
+                    {% comment %} <div class="transformers-right">{{movie.release_year}}</div> {% endcomment %}
                   </li>
                   <li>
                     <div class="transformers-left">Language:</div>
-                    <div class="transformers-right">{{movie.language}}</div>
+                    {% comment %} <div class="transformers-right">{{movie.language}}</div> {% endcomment %}
                   </li>
                   <li>
                     <div class="transformers-left">Share:</div>
